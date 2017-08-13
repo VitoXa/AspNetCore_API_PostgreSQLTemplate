@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using AspNetCore_API_PostgreSQLTemplate.Models;
+using Microsoft.EntityFrameworkCore;
+using AspNetCore_API_PostgreSQLTemplate.Data;
+using AspNetCore_API_PostgreSQLTemplate.Repository;
 
 namespace AspNetCore_API_PostgreSQLTemplate
 {
@@ -29,6 +33,17 @@ namespace AspNetCore_API_PostgreSQLTemplate
         {
             // Add framework services.
             services.AddMvc();
+
+            var sqlConnectionString = Configuration.GetConnectionString("DataAccessPostgreSqlProvider");
+            services.AddDbContext<ExampleDbContext>(options =>
+               options.UseNpgsql(
+                   sqlConnectionString,
+                   b => b.MigrationsAssembly("AspNetCore_API_PostgreSQLTemplate")
+               )
+            );
+
+            services.AddScoped<IExampleUserRepository, ExampleUserRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
