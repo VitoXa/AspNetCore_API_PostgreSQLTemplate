@@ -8,8 +8,8 @@ namespace AspNetCore_API_PostgreSQLTemplate.Repository
 {
     public interface IExampleUserRepository
     {
-        void AddUser(User user);
+        Person AddPerson(Person user);
 
-        User getUser(int id);
+        Person GetPerson(int id);
     }
 }

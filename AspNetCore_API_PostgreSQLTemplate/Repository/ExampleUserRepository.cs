@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AspNetCore_API_PostgreSQLTemplate.Models;
 using AspNetCore_API_PostgreSQLTemplate.Data;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCore_API_PostgreSQLTemplate.Repository
 {
@@ -20,21 +20,38 @@ namespace AspNetCore_API_PostgreSQLTemplate.Repository
             _logger = loggerFactory.CreateLogger("ExampleUserRepository");
         }
 
-        public void AddUser(User user)
+        public Person AddPerson(Person user)
         {
             try {
-                _context.Users.Add(user);
+                _context.Persons.Add(user);
+                _context.SaveChanges();
             }
             catch (Exception exp)
             {
-                _logger.LogError($"Error in {nameof(AddUser)}: " + exp.Message);
+                _logger.LogError($"Error in {nameof(AddPerson)}: " + exp.Message);
             }
+            return user;
 
         }
 
-        public User getUser(int id)
+        public Person GetPerson(int id)
         {
-            return _context.Users.SingleOrDefault(u => u.Id == id);
+            return _context.Persons.Include(person => person.Document).SingleOrDefault(u => u.Id == id);
+        }
+
+        public List<Person> GetAllUsers()
+        {
+            return _context.Persons.ToList();
+        }
+
+        public Person GetTask(int id)
+        {
+            return _context.Persons.SingleOrDefault(u => u.Id == id);
+        }
+
+        public List<Person> GetAllTasks()
+        {
+            return _context.Persons.ToList();
         }
     }
 }

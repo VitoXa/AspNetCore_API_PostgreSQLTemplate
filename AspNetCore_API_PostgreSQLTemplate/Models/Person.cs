@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AspNetCore_API_PostgreSQLTemplate.Models
 {
-    public class User
+    public class Person
     {
         [Key]
         public int Id { get; set; }
@@ -12,5 +14,7 @@ namespace AspNetCore_API_PostgreSQLTemplate.Models
         public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public Document Document { get; set; }
     }
 }
